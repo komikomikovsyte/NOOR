@@ -9,6 +9,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.*
@@ -24,6 +27,8 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 100)
+        DailyContentWorker.schedule(this)
         render()
     }
 
@@ -60,15 +65,17 @@ class MainActivity : Activity() {
             addView(Button(this@MainActivity).apply { text = "＋  Считать"; setOnClickListener { prefs.edit().putInt("tasbih", count + 1).apply(); render() } })
             addView(Button(this@MainActivity).apply { text = "Сбросить счётчик"; setOnClickListener { prefs.edit().putInt("tasbih", 0).apply(); render() } })
         }
+        val daily = getSharedPreferences("noor_daily", Context.MODE_PRIVATE)
         card(content, "АЯТ ДНЯ") {
-            addView(label("إِنَّ مَعَ الْعُسْرِ يُسْرًا", 22, gold, true))
-            addView(label("Воистину, за каждой тягостью наступает облегчение.", 14, Color.WHITE))
-            addView(label("Коран, 94:6 · перевод смыслов", 12, Color.LTGRAY))
+            addView(label(daily.getString("ayah_ar", "Подключитесь к интернету для первого обновления") ?: "", 22, gold, true))
+            addView(label(daily.getString("ayah_ru", "") ?: "", 14, Color.WHITE))
+            addView(label("Коран ${daily.getString("ayah_ref", "")} · Эльмир Кулиев", 12, Color.LTGRAY))
         }
-        card(content, "ЕЖЕДНЕВНЫЙ ЗИКР") {
-            addView(label("أَسْتَغْفِرُ اللَّهَ", 24, gold, true))
-            addView(label("Астагфируллах — Прошу прощения у Аллаха", 14, Color.WHITE))
-            addView(label("Утренние и вечерние поминания будут доступны в каталоге.", 12, Color.LTGRAY))
+        card(content, "ДУА ДНЯ") {
+            addView(label(daily.getString("dua_ar", "После первого обновления здесь появится кораническое дуа") ?: "", 22, gold, true))
+            addView(label(daily.getString("dua_ru", "") ?: "", 14, Color.WHITE))
+            addView(label("Коран ${daily.getString("dua_ref", "")} · обновляется ежедневно", 12, Color.LTGRAY))
+            addView(Button(this@MainActivity).apply { text = "Обновить аят и дуа сейчас"; setOnClickListener { DailyContentWorker.schedule(this@MainActivity); Toast.makeText(this@MainActivity, "Обновление запущено", Toast.LENGTH_SHORT).show() } })
         }
         card(content, "НАСТРОЙКИ") {
             

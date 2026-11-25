@@ -1,27 +1,12 @@
-# NOOR Android — сборочный MVP
+# NOOR 0.6
+Android 13 / Redmi Note 11 Pro oriented build.
 
-Проект Android для последующей установки на Redmi Note 11 Pro (Android 13).
+## Daily lock-screen content
+- Daily ayah: fetched from Al Quran Cloud in Arabic + Russian (Elmir Kuliev edition identifier `ru.kuliev`).
+- Daily dua: selected from a curated list of Quranic supplication verses, fetched from the same Quran API.
+- Cached locally: if internet is unavailable, the last successfully fetched content remains available.
+- Android WorkManager requests a refresh roughly every 24 hours. MIUI/Android may delay background work to protect battery; opening NOOR also triggers a refresh request.
+- Lock screen is implemented as public silent persistent notifications because Android 13 / MIUI does not provide a general third-party lock-screen widget surface comparable to home-screen AppWidget placement.
+- No audio adhan.
 
-## Сборка APK через GitHub Actions (можно с телефона)
-1. Создайте новый публичный или приватный репозиторий GitHub с именем `NOOR`.
-2. Загрузите содержимое этой папки в корень репозитория (не саму внешнюю ZIP-папку).
-3. Откройте вкладку **Actions**, выберите **Build NOOR APK**, нажмите **Run workflow**.
-4. Дождитесь зелёного статуса сборки. Откройте завершённый запуск, внизу найдите **Artifacts** и скачайте `NOOR-debug-APK`.
-5. Распакуйте ZIP артефакта и установите `app-debug.apk`. Android может попросить разрешить установку из этого источника.
-
-Workflow находится в `.github/workflows/android.yml`; он собирает debug APK на GitHub-hosted runner и прикрепляет APK как artifact.
-
-## Текущий статус — важно
-Это ранний технический MVP, НЕ полноценная готовая исламская платформа. Включены экран приложения, локальный счётчик тасбиха, ручные смещения времени, базовый виджет и прототип живых обоев.
-
-**Времена намазов в коде пока демонстрационные (05:00, 06:30 и т. д.) и не должны использоваться для совершения молитвы.** AZIZON.UZ ещё не подключён. Нет полноценного Корана, каталога проверенных дуа/зикров и планировщика азана. Уведомления не реализованы.
-
-Город по умолчанию установлен на Самарканд, но это пока только подпись, а не подключённое расписание. Корректировка ±60 минут меняет отображаемые демонстрационные значения.
-
-## Технические параметры
-- Package: `com.noor.islamic`
-- minSdk: 23
-- targetSdk: 35
-- Android Gradle Plugin: 8.7.3
-- Kotlin: 2.0.21
-- Build: `gradle assembleDebug`
+After installation allow NOOR notifications and lock-screen notification content in MIUI settings. For the most reliable refresh, allow background activity/autostart if MIUI offers those controls.
