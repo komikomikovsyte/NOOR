@@ -86,11 +86,11 @@ object DailyNotifications {
         val duaRef = p.getString("dua_ref", "") ?: ""
         if (ar.isBlank() && duaAr.isBlank()) return
         val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= 26) nm.createNotificationChannel(NotificationChannel(CHANNEL,"NOOR · Экран блокировки",NotificationManager.IMPORTANCE_LOW).apply { description="Ежедневный аят и дуа"; setSound(null,null); enableVibration(false) })
+        if (Build.VERSION.SDK_INT >= 26) nm.createNotificationChannel(NotificationChannel(CHANNEL,"NOOR · Аят и дуа",NotificationManager.IMPORTANCE_LOW).apply { description="Ежедневный аят и дуа на экране блокировки"; setSound(null,null); enableVibration(false) })
         val pi = PendingIntent.getActivity(context,0,Intent(context,MainActivity::class.java),PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         fun post(id:Int,title:String,a:String,r:String,reference:String) {
             val text = listOf(a,r,"Коран $reference").filter { it.isNotBlank() }.joinToString("\n")
-            val n = NotificationCompat.Builder(context,CHANNEL).setSmallIcon(android.R.drawable.ic_menu_today).setContentTitle(title)
+            val n = NotificationCompat.Builder(context,CHANNEL).setSmallIcon(R.drawable.ic_noor_notification).setContentTitle(title)
                 .setContentText(r.ifBlank { a }).setStyle(NotificationCompat.BigTextStyle().bigText(text)).setContentIntent(pi)
                 .setSilent(true).setOngoing(true).setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setPriority(NotificationCompat.PRIORITY_LOW).build()
             nm.notify(id,n)
