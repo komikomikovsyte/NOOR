@@ -42,7 +42,10 @@ class MainActivity : Activity() {
         render()
     }
 
-    override fun onResume() { super.onResume(); if (::class.java != null) render() }
+    override fun onResume() {
+        super.onResume()
+        render()
+    }
 
     private fun render() {
         window.statusBarColor = bg
