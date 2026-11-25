@@ -1,7 +1,0 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
- android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
- android:padding="12dp" android:background="#102B23">
- <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="NOOR  •  НАМАЗ" android:textColor="#D7BD7B" android:textStyle="bold" android:textSize="12sp"/>
- <TextView android:id="@+id/widget_city" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Расписание" android:textColor="#FFFFFF" android:textSize="18sp" android:layout_marginTop="5dp"/>
- <TextView android:id="@+id/widget_times" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Фаджр 05:00   Зухр 12:00   Аср 15:30\nМагриб 17:30   Иша 19:00" android:textColor="#E5E9E4" android:textSize="12sp" android:layout_marginTop="6dp"/>
-</LinearLayout>
